@@ -1,23 +1,8 @@
 import React from 'react';
 import MessageList from '../../components/MessageList';
-
-import { api } from '../../services/api';
-
-//get user token to make sure its logged in
-// export const getStaticProps = async () => {
-
-//   const signUpUrl = '/sign-up'
-//   const user = {
-//     username: 'guidddduck',
-//     password: 'guidddduck'
-//   }
-
-//   const response = await api.post(signUpUrl, user);
-//   console.log(response.data);
-//   const data = response.data;
-
-//   return { token: data }
-// }
+// import { GetServerSideProps } from 'next'
+// import { getAPIClient } from '../../services/axios'
+// import { parseCookies } from 'nookies';
 
 const Feed: React.FC = () => {
   return (
@@ -26,3 +11,23 @@ const Feed: React.FC = () => {
 }
 
 export default Feed;
+
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//   const apiClient = getAPIClient(ctx);
+//   const { ['nextauth.token']: token } = parseCookies(ctx)
+
+//   if (!token) {
+//     return {
+//       redirect: {
+//         destination: '/',
+//         permanent: false,
+//       }
+//     }
+//   }
+
+//   await apiClient.get('/users')
+
+//   return {
+//     props: {}
+//   }
+// }

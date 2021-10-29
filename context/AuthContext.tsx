@@ -1,34 +1,74 @@
- import { createContext } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { setCookie, parseCookies } from 'nookies';
+import Router from 'next/router';
 import { api } from '../services/api';
 
- type AuthContextType = {
-   isAuthenticated: boolean;
- }
+type SignInData = {
+  username: string,
+  password: string
+}
 
- export const AuthContext = createContext({ } as AuthContextType)
+type User = {
+  username: string,
+  password: string
+}
 
- const AuthProvider = ({ children }) => {
-   const isAuthenticated = false;
+type AuthContextType = {
+  isAuthenticated: boolean;
+  user: User,
+  signIn: (data: SignInData) => Promise<void>,
+  signUp: (data: User) => Promise<void>
+}
 
-   const signUp = async () => {
-    const signUpUrl = '/sign-up'
-      const user = {
-        username: 'guidddduck',
-        password: 'guidddduck'
-      }
+export const AuthContext = createContext({ } as AuthContextType);
 
-      const response = await api.post(signUpUrl, user);
-      console.log(response.data);
-      const data = response.data;
-   }
+export const AuthProvider = ({ children }) => {
 
-   const signIn = async () => {
+  const [user, setUser] = useState<User | null>(null);
 
-   }
+  const isAuthenticated = !!user; //remember to change this
 
-   return (
-    <AuthContext.Provider value={{ isAuthenticated }}>
+  const signUp = async ({ username, password }: User) => {
+    const signUpUrl = '/sign-up';
+
+    const response = await api.post(signUpUrl, { username, password });
+    console.log(response.data);
+    return response.data;
+  }
+
+  useEffect(() => {
+    const { 'auth.token': token } = parseCookies();
+
+    if (token) {
+
+    }
+  }, [])
+
+  const signIn = async({ username, password }: SignInData) => {
+    const signInUrl = '/sign-in';
+
+    const response = await api.post(signInUrl, { username, password });
+    const token = response.data;
+
+    setCookie(undefined, 'auth.token', token, {
+      maxAge: 60 * 60 * 1, //1 hour cookie
+    }) //(ss, name, thing to save, options[had to add @types/cookie - used by nookies])
+    console.log(token);
+
+    api.defaults.headers['Authorization'] = `Bearer ${token}`
+
+    setUser({
+      username: username,
+      password: password
+    });
+
+    Router.push('/Feed');
+    //return token;
+  }
+
+  return (
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, signUp }}>
       {children}
     </AuthContext.Provider>
-   );
- }
+  );
+}

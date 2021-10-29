@@ -16,7 +16,7 @@ type Message = {
   }
 }
 
-const useMessages = (token: string) => {
+const useMessages = () => {
   const [data, setData] = useState<Message[]>([]);
   const [error, setError] = useState(null);
   const getMessagesUrl = '/feeds'
@@ -25,13 +25,7 @@ const useMessages = (token: string) => {
 
     const loadData = async() => {
       try {
-        const response = await api.get(getMessagesUrl, {
-          headers: {
-            accept: 'application/json',
-            // Authorization: `Bearer ${token}`
-            Authorization: `Bearer`+' '+token
-          }
-        })
+        const response = await api.get(getMessagesUrl)
         if(!response) {
           console.log('could not get data')
         } else {
@@ -49,7 +43,7 @@ const useMessages = (token: string) => {
         setData(data);
       }
     }) ()
-  }, [token])
+  }, [])
 
   return { data, error }
 }

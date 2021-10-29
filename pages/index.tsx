@@ -8,7 +8,7 @@ const Home: React.FC = () => {
 
   return (
     <Flex>
-      <AuthForm />
+      <AuthForm hasAccount={true} />
     </Flex>
   )
 }
