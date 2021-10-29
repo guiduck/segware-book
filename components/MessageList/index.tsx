@@ -26,8 +26,8 @@ const MessageList: React.FC = () => {
 
   return (
     <Container >
-      <Heading>
-        List of messages
+      <Heading size='2xl' >
+        Messages
       </Heading>
       {
         messages
@@ -40,6 +40,7 @@ const MessageList: React.FC = () => {
               likes={message.likes}
               loves={message.loves}
               date={message.createdAt}
+              messageId={message.id}
             />
           );
         })

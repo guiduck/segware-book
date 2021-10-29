@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useRouter } from 'next/router';
+import Router from 'next/router';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -8,7 +8,7 @@ import {
   Input,
   Button,
   useColorModeValue
-} from '@chakra-ui/react'
+} from '@chakra-ui/react';
 import { AuthContext } from '../../context/AuthContext';
 
 type User = {
@@ -25,16 +25,14 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
   const [userHasAccount, setUserHasAccount] = useState(hasAccount);
 
   const formBackground = useColorModeValue('gray.200', 'gray.700');
-  const { signIn, signUp } = useContext(AuthContext);
+  const { signIn, signUp, forgotPassword } = useContext(AuthContext);
 
   const { register, handleSubmit, formState: { errors } }: any = useForm<User>();
 
-  const router = useRouter();
-
-  const submitHandler = async (data: User) => {
-    if (!hasAccount && data) {
+  const signInHandler = async (data: User) => {
+    if (!userHasAccount && data) {
       await signUp(data);
-    } else if (hasAccount && data) {
+    } else if (userHasAccount && data) {
       await signIn(data);
     }
   }
@@ -45,7 +43,7 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
         <Heading mb={6}>
           Login or create an account
         </Heading>
-        <form onSubmit={handleSubmit(submitHandler)}>
+        <form onSubmit={handleSubmit(signInHandler)}>
           <Flex>
             <Input
               {...register('username', { required: true })}

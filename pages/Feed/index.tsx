@@ -1,12 +1,17 @@
 import React from 'react';
 import MessageList from '../../components/MessageList';
+import { Flex } from '@chakra-ui/react';
+import MessageForm from '../../components/MessageForm';
 // import { GetServerSideProps } from 'next'
 // import { getAPIClient } from '../../services/axios'
 // import { parseCookies } from 'nookies';
 
 const Feed: React.FC = () => {
   return (
+    <Flex width='100%' mb={-50} height='100vh' >
+      <MessageForm />
       <MessageList />
+    </Flex>
   );
 }
 

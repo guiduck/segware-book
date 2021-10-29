@@ -17,7 +17,8 @@ type AuthContextType = {
   isAuthenticated: boolean;
   user: User,
   signIn: (data: SignInData) => Promise<void>,
-  signUp: (data: User) => Promise<void>
+  signUp: (data: User) => Promise<void>,
+  forgotPassword: (data: string) => Promise<User>
 }
 
 export const AuthContext = createContext({ } as AuthContextType);
@@ -44,6 +45,14 @@ export const AuthProvider = ({ children }) => {
     }
   }, [])
 
+  const forgotPassword = async(username: string) => {
+    const forgotPasswordUrl = `/forgot-password/${username}`;
+
+    const response = await api.get(forgotPasswordUrl);
+    return response.data;
+    Router.push('/');
+  }
+
   const signIn = async({ username, password }: SignInData) => {
     const signInUrl = '/sign-in';
 
@@ -67,7 +76,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user, signUp }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, signUp, forgotPassword }}>
       {children}
     </AuthContext.Provider>
   );

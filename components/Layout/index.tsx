@@ -5,6 +5,10 @@ import {
   Button,
   useColorMode
 } from '@chakra-ui/react';
+import {
+  SunIcon,
+  MoonIcon
+} from '@chakra-ui/icons';
 
 import NavBar from '../NavBar';
 
@@ -13,10 +17,14 @@ const Layout = ({ children }) => {
   const { toggleColorMode } = useColorMode();
 
   return (
-    <Flex direction='column' width='100%' height='100vh' justifyContent='center' alignItems='center'>
-      <NavBar />
-      <Button alignSelf='flex-start' onClick={toggleColorMode} >change color mode</Button>
-      {children}
+    <Flex direction='column' width='100vw' height='100vh' justifyContent='center' alignItems='center'>
+      <Flex width='100%' justifyContent='space-between'>
+        <Button alignSelf='flex-start' onClick={toggleColorMode} ><SunIcon/><MoonIcon/></Button>
+        {/* <NavBar /> */}
+      </Flex>
+      <Flex>
+        {children}
+      </Flex>
     </Flex>
   );
 }

@@ -11,7 +11,7 @@ import {
 
 const NavBar: React.FC = () => {
   return (
-    <Flex>
+    <Flex >
       <Menu id='r34r34'>
         <Button>
           <MenuItem>
