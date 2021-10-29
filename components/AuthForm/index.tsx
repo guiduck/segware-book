@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import Router from 'next/router';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -7,7 +6,8 @@ import {
   Heading,
   Input,
   Button,
-  useColorModeValue
+  useColorModeValue,
+  Link
 } from '@chakra-ui/react';
 import { AuthContext } from '../../context/AuthContext';
 
@@ -25,7 +25,7 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
   const [userHasAccount, setUserHasAccount] = useState(hasAccount);
 
   const formBackground = useColorModeValue('gray.200', 'gray.700');
-  const { signIn, signUp, forgotPassword } = useContext(AuthContext);
+  const { signIn, signUp } = useContext(AuthContext);
 
   const { register, handleSubmit, formState: { errors } }: any = useForm<User>();
 
@@ -39,7 +39,6 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
 
   return (
       <Flex direction='column' background={formBackground} p={12} rounded={6} >
-
         <Heading mb={6}>
           Login or create an account
         </Heading>
@@ -75,6 +74,7 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
             <Button onClick={()=>setUserHasAccount(false)} type='submit' ml={6} colorScheme='red' >Sign Up</Button>
           </Flex>
         </form>
+        <Link href='/ForgotPassword' mt={6} >Forgot your password?</Link>
         {/* <Flex>{JSON.stringify(user)}</Flex> */}
       </Flex>
   )

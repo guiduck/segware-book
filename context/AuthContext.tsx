@@ -49,8 +49,8 @@ export const AuthProvider = ({ children }) => {
     const forgotPasswordUrl = `/forgot-password/${username}`;
 
     const response = await api.get(forgotPasswordUrl);
+    console.log(response.data);
     return response.data;
-    Router.push('/');
   }
 
   const signIn = async({ username, password }: SignInData) => {
