@@ -25,9 +25,8 @@ export const AuthContext = createContext({ } as AuthContextType);
 
 export const AuthProvider = ({ children }) => {
 
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
-
-  const isAuthenticated = !!user; //remember to change this
 
   const signUp = async ({ username, password }: User) => {
     const signUpUrl = '/sign-up';
@@ -41,7 +40,7 @@ export const AuthProvider = ({ children }) => {
     const { 'auth.token': token } = parseCookies();
 
     if (token) {
-
+      setIsAuthenticated(true);
     }
   }, [])
 
@@ -61,7 +60,7 @@ export const AuthProvider = ({ children }) => {
 
     setCookie(undefined, 'auth.token', token, {
       maxAge: 60 * 60 * 1, //1 hour cookie
-    }) //(ss, name, thing to save, options[had to add @types/cookie - used by nookies])
+    }) //(ss, name, thing to save, options[had to add @types/cookie -> used by nookies])
     console.log(token);
 
     api.defaults.headers['Authorization'] = `Bearer ${token}`

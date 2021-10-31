@@ -9,7 +9,7 @@ import { AuthContext } from '../../context/AuthContext';
 
 const Feed: React.FC = () => {
 
-  const {isAuthenticated} = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <Flex width='100%' mb={-50} height='100vh' >
