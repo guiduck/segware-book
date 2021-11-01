@@ -25,8 +25,8 @@ const MessageList: React.FC = () => {
   const {data: messages, error } = useMessages()
 
   return (
-    <Container >
-      <Heading size='2xl' >
+    <Container mt={10}>
+      <Heading size='lg' mb={10} >
         Messages
       </Heading>
       {

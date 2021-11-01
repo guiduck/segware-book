@@ -10,8 +10,6 @@ import {
   MoonIcon
 } from '@chakra-ui/icons';
 
-import NavBar from '../NavBar';
-
 const Layout = ({ children }) => {
 
   const { toggleColorMode } = useColorMode();
@@ -20,7 +18,6 @@ const Layout = ({ children }) => {
     <Flex direction='column' width='100vw' height='100vh' justifyContent='center' alignItems='center'>
       <Flex width='100%' justifyContent='space-between'>
         <Button alignSelf='flex-start' onClick={toggleColorMode} ><SunIcon/><MoonIcon/></Button>
-        {/* <NavBar /> */}
       </Flex>
       <Flex>
         {children}

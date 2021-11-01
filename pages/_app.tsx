@@ -6,13 +6,13 @@ import { AuthProvider } from '../context/AuthContext'
 
 const MyApp: React.FC<AppProps> = ({ Component, pageProps }) => {
   return (
-    <AuthProvider>
-      <ChakraProvider>
+    <ChakraProvider>
+      <AuthProvider>
         <Layout>
           <Component {...pageProps} />
         </Layout>
-      </ChakraProvider>
-    </AuthProvider>
+      </AuthProvider>
+    </ChakraProvider>
   )
 }
 

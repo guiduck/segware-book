@@ -12,30 +12,10 @@ const Feed: React.FC = () => {
   const { isAuthenticated } = useContext(AuthContext);
 
   return (
-    <Flex width='100%' mb={-50} height='100vh' >
-      {isAuthenticated ? <Flex><MessageForm /><MessageList /></Flex> : <Flex><Link href='/'>You must be Authenticated</Link></Flex>}
+    <Flex width='100%' mb={-50} height='100vh' direction='column' >
+      {isAuthenticated ? <Flex direction='column' align='center'><MessageForm /><MessageList /></Flex> : <Flex><Link href='/'>You must be Authenticated</Link></Flex>}
     </Flex>
   );
 }
 
 export default Feed;
-
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//   const apiClient = getAPIClient(ctx);
-//   const { ['nextauth.token']: token } = parseCookies(ctx)
-
-//   if (!token) {
-//     return {
-//       redirect: {
-//         destination: '/',
-//         permanent: false,
-//       }
-//     }
-//   }
-
-//   await apiClient.get('/users')
-
-//   return {
-//     props: {}
-//   }
-// }

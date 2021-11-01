@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -7,9 +7,12 @@ import {
   Input,
   Button,
   useColorModeValue,
-  Link
+  Link,
+  FormErrorMessage,
+  FormControl
 } from '@chakra-ui/react';
 import { AuthContext } from '../../context/AuthContext';
+import Router from 'next/router';
 
 type User = {
   username: string,
@@ -25,7 +28,7 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
   const [userHasAccount, setUserHasAccount] = useState(hasAccount);
 
   const formBackground = useColorModeValue('gray.200', 'gray.700');
-  const { signIn, signUp } = useContext(AuthContext);
+  const { signIn, signUp, isLoading, isAuthenticated } = useContext(AuthContext);
 
   const { register, handleSubmit, formState: { errors } }: any = useForm<User>();
 
@@ -37,41 +40,47 @@ const AuthForm: React.FC<Props> = ({ hasAccount }) => {
     }
   }
 
+  useEffect(() => {
+    if(isAuthenticated) {
+      Router.push('/Feed');
+    }
+  }, [isAuthenticated]);
+
   return (
       <Flex direction='column' background={formBackground} p={12} rounded={6} >
         <Heading mb={6}>
-          Login or create an account
+          Login
         </Heading>
         <form onSubmit={handleSubmit(signInHandler)}>
           <Flex>
+          <FormControl mb={3} isInvalid={errors.username && errors.username.type === 'required'}>
             <Input
               {...register('username', { required: true })}
               name='username'
               placeholder='username'
               variant='filled'
-              mb={3}
               type='text'
             />
-            { errors.username && errors.username.type === 'required' && (
-              <div className='error'>you must enter your username</div>
-            )}
+            <FormErrorMessage>Username is required</FormErrorMessage>
+          </FormControl>
           </Flex>
           <Flex>
+
+          <FormControl mb={4} isInvalid={errors.password && errors.password.type === 'required'}>
             <Input
               {...register('password', { required: true })}
               name='password'
               placeholder='******'
               variant='filled'
-              mb={6}
               type='password'
             />
-            { errors.password && errors.password.type === 'required' && (
-              <div>you must enter your password</div>
-            )}
+            <FormErrorMessage>Password is required</FormErrorMessage>
+          </FormControl>
+
           </Flex>
           <Flex justifyContent='center' >
-            <Button type='submit' colorScheme='teal' >Sign in</Button>
-            <Button onClick={()=>setUserHasAccount(false)} type='submit' ml={6} colorScheme='red' >Sign Up</Button>
+            <Button disabled={isLoading} isLoading={isLoading} type='submit' colorScheme='teal' >Sign in</Button>
+            <Button disabled={isLoading} isLoading={isLoading} onClick={()=>setUserHasAccount(false)} type='submit' ml={6} colorScheme='red' >Sign Up</Button>
           </Flex>
         </form>
         <Link href='/ForgotPassword' mt={6} >Forgot your password?</Link>

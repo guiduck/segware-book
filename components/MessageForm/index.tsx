@@ -1,31 +1,49 @@
 import React, { useState } from 'react';
 
-import { Flex, Button, Heading, Input } from '@chakra-ui/react';
+import {
+  Flex,
+  Button,
+  Heading,
+  Input,
+  useToast
+} from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import { api } from '../../services/api';
+import Router from 'next/router';
 
 type Message = {
   content: string
 }
 
 const MessageForm: React.FC = () => {
-
-  const [message, setMessage] = useState('');
+  const toast = useToast();
 
   const { register, handleSubmit, formState: { errors } }: any = useForm<Message>();
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendMessageUrl = '/feed';
 
   const sendMessage = async (data: Message) => {
-    const response = await api.post(sendMessageUrl, data);
-    console.log(response.data);
+    setIsLoading(true);
+    try {
+      await api.post(sendMessageUrl, data);
+      Router.reload();
+    } catch {
+      toast({
+        title: `Something went wrong...`,
+        status: 'error',
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
     <Flex>
       <form onSubmit={handleSubmit(sendMessage)}>
         <Flex direction='column'>
-          <Heading mb={6} size='md' >New message</Heading>
+          <Heading mb={6} size='lg' >New message</Heading>
           <Input
             {...register('content', { required: true })}
             name='content'
@@ -38,7 +56,7 @@ const MessageForm: React.FC = () => {
             <div className='error'>your message body is empty</div>
           )}
         </Flex>
-        <Button w='100%' type='submit' colorScheme='red'>Send</Button>
+        <Button isLoading={isLoading} disabled={isLoading} w='100%' type='submit' colorScheme='red'>Send</Button>
       </form>
     </Flex>
   );

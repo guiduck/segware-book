@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from 'react';
 import { setCookie, parseCookies } from 'nookies';
 import Router from 'next/router';
 import { api } from '../services/api';
+import { useToast } from '@chakra-ui/toast';
 
 type SignInData = {
   username: string,
@@ -18,22 +19,43 @@ type AuthContextType = {
   user: User,
   signIn: (data: SignInData) => Promise<void>,
   signUp: (data: User) => Promise<void>,
-  forgotPassword: (data: string) => Promise<User>
+  forgotPassword: (data: string) => Promise<User>,
+  isLoading: boolean
 }
 
 export const AuthContext = createContext({ } as AuthContextType);
 
 export const AuthProvider = ({ children }) => {
+  const toast = useToast()
 
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const signUp = async ({ username, password }: User) => {
-    const signUpUrl = '/sign-up';
+    setIsLoading(true);
+    try {
+      const signUpUrl = '/sign-up';
+      const response = await api.post(signUpUrl, { username, password });
 
-    const response = await api.post(signUpUrl, { username, password });
-    console.log(response.data);
-    return response.data;
+      toast({
+        title: `Successfully created an account`,
+        status: 'success',
+        isClosable: true,
+      });
+
+      await signIn({username, password});
+      return response.data;
+    } catch (e) {
+      console.log('error', e);
+      toast({
+        title: `Something went wrong...`,
+        status: 'error',
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -42,7 +64,7 @@ export const AuthProvider = ({ children }) => {
     if (token) {
       setIsAuthenticated(true);
     }
-  }, [])
+  }, [user])
 
   const forgotPassword = async(username: string) => {
     const forgotPasswordUrl = `/forgot-password/${username}`;
@@ -53,29 +75,38 @@ export const AuthProvider = ({ children }) => {
   }
 
   const signIn = async({ username, password }: SignInData) => {
-    const signInUrl = '/sign-in';
+    setIsLoading(true);
+    try {
+      const signInUrl = '/sign-in';
+      const response = await api.post(signInUrl, { username, password });
+      const token = response.data;
 
-    const response = await api.post(signInUrl, { username, password });
-    const token = response.data;
+      setCookie(undefined, 'auth.token', token, {
+        maxAge: 60 * 60 * 1, //1 hour cookie
+      }) //(ss, name, thing to save, options[had to add @types/cookie -> used by nookies])
 
-    setCookie(undefined, 'auth.token', token, {
-      maxAge: 60 * 60 * 1, //1 hour cookie
-    }) //(ss, name, thing to save, options[had to add @types/cookie -> used by nookies])
-    console.log(token);
+      api.defaults.headers['Authorization'] = `Bearer ${token}`
 
-    api.defaults.headers['Authorization'] = `Bearer ${token}`
+      setUser({
+        username: username,
+        password: password
+      });
 
-    setUser({
-      username: username,
-      password: password
-    });
-
-    Router.push('/Feed');
-    //return token;
+      Router.push('/Feed');
+    } catch (e) {
+      console.log('error', e);
+      toast({
+        title: `Something went wrong...`,
+        status: 'error',
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, signIn, user, signUp, forgotPassword }}>
+    <AuthContext.Provider value={{ isAuthenticated, signIn, user, signUp, forgotPassword, isLoading }}>
       {children}
     </AuthContext.Provider>
   );
