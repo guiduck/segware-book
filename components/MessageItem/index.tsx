@@ -65,10 +65,10 @@ const MessageItem: React.FC<Props> = ({ messageId, content, username, likes, lov
             love: reaction.love
           })}>likes: {reaction.like ? likes + 1 : likes}</Button>
           <Button disabled={isLoading} ml={3} isLoading={isLoading} onClick={(e)=>setReaction({
-              feedId: reaction.feedId,
-              like: reaction.like,
-              love: !reaction.love
-            })}>loves: {reaction.love ? loves + 1 : loves}</Button>
+            feedId: reaction.feedId,
+            like: reaction.like,
+            love: !reaction.love
+          })}>loves: {reaction.love ? loves + 1 : loves}</Button>
         </Flex>
       </Flex>
     </Box>

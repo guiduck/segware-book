@@ -67,11 +67,27 @@ export const AuthProvider = ({ children }) => {
   }, [user])
 
   const forgotPassword = async(username: string) => {
-    const forgotPasswordUrl = `/forgot-password/${username}`;
+    setIsLoading(true);
+    try {
+      const forgotPasswordUrl = `/forgot-password/${username}`;
 
-    const response = await api.get(forgotPasswordUrl);
-    console.log(response.data);
-    return response.data;
+      const response = await api.get(forgotPasswordUrl);
+      toast({
+        title: `Password retrieved`,
+        status: 'success',
+        isClosable: true,
+      });
+      return response.data;
+    } catch (err) {
+      console.log('error', err);
+      toast({
+        title: `Something went wrong...`,
+        status: 'error',
+        isClosable: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const signIn = async({ username, password }: SignInData) => {
