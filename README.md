@@ -27,6 +27,7 @@ This project was bootstrapped with [Create Next App](https://nextjs.org/docs/api
 * [ESLint](https://github.com/eslint/eslint)
 
 ## Usage
+### Comands
 
 Install dependencies:
 
@@ -37,8 +38,48 @@ yarn (or npm i)
 Done! Start the service:
 
 ```sh
-yarn start
+yarn dev
 ```
+
+#Development mode
+
+```sh
+# run the app in development mode
+yarn dev
+# next dev starts the application in development mode with hot-code reloading, error reporting, and more.
+```
+#Production mode
+
+```sh
+# When building the Next.js app for production, you'll want to use next build:
+next build
+# next build creates an optimized production build of your application. The output displays information about each route.
+
+Size – The number of assets downloaded when navigating to the page client-side. The size for each route only includes its dependencies.
+First Load JS – The number of assets downloaded when visiting the page from the server. The amount of JS shared by all is shown as a separate metric.
+
+# Followed by either next start, when you want to start the production server:
+next start
+# next start starts the application in production mode. The application should be compiled with next build first.
+
+# Or next export, when exporting the app as static HTML:
+next export
+# next export allows you to export your app to static HTML, which can be run standalone without the need of a Node.js server.
+
+# For more information refer to  docs.
+```
+For more information refer to * [Next.js CLI](https://nextjs.org/docs/api-reference/cli) docs.
+
+
+```sh
+# or, in this case as in packege.json with yarn or npm
+```
+![commands](https://github.com/guiduck/segware-book/blob/main/public/images/comands.jpeg)
+```sh
+# If you don't do these steps, you might see this message: 
+```
+![nextstartproblem](https://github.com/guiduck/segware-book/blob/main/public/images/nextstartproblem.jpeg)
+
 
 ## Project Structure
 
@@ -48,15 +89,6 @@ yarn start
 * `src/context` the AuthContext used for global state control of user Authentication related data;
 * `src/Pages/` first level router components;
 
-## Comandos
-
-```sh
-# run the app
-yarn start
-
-# build static assets
-yarn build 
-```
 ## Screenshots
 ![feedDark](https://github.com/guiduck/segware-book/blob/main/public/images/feedDark.jpeg)
 ![feedLight](https://github.com/guiduck/segware-book/blob/main/public/images/feedLight.jpeg)
