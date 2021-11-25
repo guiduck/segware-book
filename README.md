@@ -67,17 +67,16 @@ next export
 # next export allows you to export your app to static HTML, which can be run standalone without the need of a Node.js server.
 
 # For more information refer to  docs.
-```
+
 For more information refer to * [Next.js CLI](https://nextjs.org/docs/api-reference/cli) docs.
-
-
-```sh
-# or, in this case as in packege.json with yarn or npm
 ```
+
+or, in this case as in packege.json with yarn or npm:
+
 ![commands](https://github.com/guiduck/segware-book/blob/main/public/images/comands.jpeg)
-```sh
-# If you don't do these steps, you might see this message: 
-```
+
+If you don't do these steps, you might see this message: 
+
 ![nextstartproblem](https://github.com/guiduck/segware-book/blob/main/public/images/nextstartproblem.jpeg)
 
 
